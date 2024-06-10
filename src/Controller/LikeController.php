@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -12,6 +13,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LikeController extends AbstractController
 {
+    /**
+     * @param MicroPost $post
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/like/{id}', name: 'app_like')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function like(
@@ -28,6 +35,12 @@ class LikeController extends AbstractController
         return $this->redirect($request->headers->get('referer'));
     }
 
+    /**
+     * @param MicroPost $post
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/unlike/{id}', name: 'app_unlike')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function unlike(

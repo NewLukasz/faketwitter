@@ -19,6 +19,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class MicroPostController extends AbstractController
 {
+    /**
+     * @param MicroPostRepository $posts
+     * @return Response
+     */
     #[Route('/micro-post', name: 'app_micro_post')]
     public function index(
         MicroPostRepository $posts
@@ -29,6 +33,10 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+     * @param MicroPostRepository $posts
+     * @return Response
+     */
     #[Route('/micro-post/top-liked', name: 'app_micro_post_topliked')]
     public function topLiked(
         MicroPostRepository $posts
@@ -39,6 +47,10 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+     * @param MicroPostRepository $posts
+     * @return Response
+     */
     #[Route('/micro-post/follows', name: 'app_micro_post_follows')]
     public function postsFromFollows(
         MicroPostRepository $posts
@@ -49,9 +61,12 @@ class MicroPostController extends AbstractController
         return $this->render('micro_post/follows.html.twig', [
             'posts' => $posts->findAllByAuthors($currentUser->getFollowers()),
         ]);
-        //TODO ogarnąć o co tu chodzi powinno być Follows
     }
 
+    /**
+     * @param MicroPost $post
+     * @return Response
+     */
     #[Route('/micro-post/{post}', name: 'app_micro_post_show')]
     #[IsGranted(MicroPost::VIEW, 'post')]
     public function showOne(
@@ -63,6 +78,11 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/micro-post/add', 'app_micro_post_add', priority: 2)]
     #[isGranted('ROLE_WRITER')]
     public function add(
@@ -94,6 +114,12 @@ class MicroPostController extends AbstractController
         );
     }
 
+    /**
+     * @param MicroPost $post
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/micro-post/{post}/edit', 'app_micro_post_edit')]
     #[isGranted(MicroPost::EDIT, 'post')]
     public function edit(
@@ -123,7 +149,12 @@ class MicroPostController extends AbstractController
         );
     }
 
-
+    /**
+     * @param MicroPost $post
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/micro-post/{post}/comment', 'app_micro_post_comment')]
     #[isGranted('ROLE_COMMENTER')]
     public function addComment(
@@ -140,9 +171,6 @@ class MicroPostController extends AbstractController
             $comment = $form->getData();
             $comment->setMicroPost($post);
             $comment->setAuthor($this->getUser());
-
-            //tutaj sprawdzić czy post się zapisuje
-
             $entityManager->persist($comment);
             $entityManager->flush();
             $this->addFlash('success', 'Your comment has been updated');

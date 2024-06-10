@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -17,6 +18,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SettingsProfileController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/settings/profile', name: 'app_settings_profile')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function profile(
@@ -55,6 +61,12 @@ class SettingsProfileController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param SluggerInterface $slugger
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/settings/profile-image', name: 'app_settings_profile_image')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function profileImage(
@@ -91,7 +103,6 @@ class SettingsProfileController extends AbstractController
                 $profile = $user->getUserProfile() ?? new UserProfile();
                 $profile->setImage($newFileName);
                 $user->setUserProfile($profile);
-                //wrong practise to have all path to file easier to move files to another places
                 $entityManager->persist($profile);
                 $entityManager->flush();
                 $this->addFlash('success', 'Your profile image is updated');

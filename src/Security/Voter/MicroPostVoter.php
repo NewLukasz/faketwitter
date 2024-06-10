@@ -13,14 +13,20 @@ use App\Entity\MicroPost;
 class MicroPostVoter extends Voter
 {
 
+    /**
+     * @param Security $security
+     */
     public function __construct(
         private Security $security
     ) {}
 
+    /**
+     * @param string $attribute
+     * @param mixed $subject
+     * @return bool
+     */
     protected function supports(string $attribute, mixed $subject): bool
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [MicroPost::EDIT, MicroPost::VIEW])
             && $subject instanceof MicroPost;
     }

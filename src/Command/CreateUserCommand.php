@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Command;
 
@@ -19,6 +20,10 @@ use Doctrine\ORM\EntityManagerInterface;
 )]
 class CreateUserCommand extends Command
 {
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     */
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $userPasswordHasher
@@ -27,6 +32,9 @@ class CreateUserCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @return void
+     */
     protected function configure(): void
     {
         $this
@@ -34,6 +42,11 @@ class CreateUserCommand extends Command
             ->addArgument('password',  InputOption::VALUE_REQUIRED, 'User password');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

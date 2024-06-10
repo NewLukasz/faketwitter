@@ -12,15 +12,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     */
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher
     ) {}
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $user1 = new User();
         $user1->setEmail('test1@test.com');
         $user1->setPassword($this->userPasswordHasher->hashPassword($user1,'1234'));

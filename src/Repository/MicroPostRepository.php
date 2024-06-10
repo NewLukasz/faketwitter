@@ -16,11 +16,21 @@ use Doctrine\Common\Collections\Collection;
  */
 class MicroPostRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MicroPost::class);
     }
 
+    /**
+     * @param bool $withComments
+     * @param bool $withLikes
+     * @param bool $withAuthors
+     * @param bool $withProfiles
+     * @return QueryBuilder
+     */
     private function findAllQuery(
         bool $withComments = false,
         bool $withLikes = false,
@@ -48,6 +58,10 @@ class MicroPostRepository extends ServiceEntityRepository
         return $query->orderBy('m.created', 'DESC');
     }
 
+    /**
+     * @param int|User $author
+     * @return array
+     */
     public function findAllByAuthor(int|User $author): array
     {
         return $this->findAllQuery(
@@ -62,6 +76,10 @@ class MicroPostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param Collection|array $authors
+     * @return array
+     */
     public function findAllByAuthors(Collection|array $authors): array
     {
         return $this->findAllQuery(
@@ -76,6 +94,9 @@ class MicroPostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array
+     */
     public function findAllWithComments(): array
     {
         return
@@ -84,6 +105,10 @@ class MicroPostRepository extends ServiceEntityRepository
                 ->getResult();
     }
 
+    /**
+     * @param int $minLikes
+     * @return array
+     */
     public function findAllWithMinLikes(int $minLikes): array
     {
         //just ids of posts
@@ -106,29 +131,4 @@ class MicroPostRepository extends ServiceEntityRepository
             ->setParameter(':idList', $idList)
             ->getQuery()->getResult();
     }
-
-    //    /**
-    //     * @return MicroPost[] Returns an array of MicroPost objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?MicroPost
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
