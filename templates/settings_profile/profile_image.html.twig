@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile settings{% endblock %}
+
+{% block bread %}
+    -> Profile settings
+{% endblock %}
+
+{% block body %}
+    {{ include('settings_profile/_setting_profile_tabs.html.twig') }}
+    <div class="flex items-center">
+        {{ include('shared/_avatar.html.twig', {profile: app.user.userProfile, 'size': 32}) }}
+        <div class="ml-16">
+            {{ form_start(form, {'atrr': {'novalidate': 'novalidated'}}) }}
+            {{ form_label(form.profileImage, 'Upload file', {'label_attr': {'class':'shadow-sm border-transparent bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-900 cursor-pointer rounded-md border p-2'}}) }}
+            {{ form_widget(form.profileImage, {'attr': {'class':'hidden'}}) }}
+            {{ form_errors(form.profileImage) }}
+        </div>
+    </div>
+        <button type="submit"
+                class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md p-2 mt-4 mb-2">
+            Save changes
+        </button>
+        {{ form_end(form) }}
+{% endblock %}

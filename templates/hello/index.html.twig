@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if messages|length > 0 %}
+            {% for key, message in messages|slice(0, limit) %}
+                <a href="/messages/{{ key }}">
+                    <div>{{ message.message }}</div>
+                </a>
+                {{ include('hello/_message.html.twig', {message: message}) }}
+            {% endfor %}
+        {% else %}
+            <div>Theres nothing here yet</div>
+        {% endif %}
+    </div>
+{% endblock %}
