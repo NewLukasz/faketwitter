@@ -10,6 +10,7 @@ Main functionalities:
  - twig reusable partial templates (tabs in this case)
  - file uploader (user avatar)
  - user has tabs e.g show post only from user which follows
+ - N+1 issue in case of db query (twig) solved
  - much more
 
 
